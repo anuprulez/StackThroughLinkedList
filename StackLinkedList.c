@@ -1,6 +1,9 @@
 // Stack implementation through Linked list 
-// 1. Push
-// 2. Pop
+// 1. Pushes an element
+// 2. Pops an element
+// 3. Gets Size
+// 4. Checks if stack is empty
+// 5. Prints the stack
 
 #include <stdio.h>
 #include <stdlib.h> 
