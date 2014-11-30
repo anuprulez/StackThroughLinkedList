@@ -13,59 +13,29 @@ typedef struct node_type
 }	node;
 
 typedef node *list; 
-    
+list temp, current;
+
 int main()
 {
-	int counter, how_many_characters = 0, pop_counter = 0, list_size = 0, action_key = 0;
-	char data_char;
-	list head, temp, tail, current = NULL, previous = NULL, iterator = NULL;
-	head = NULL, temp = NULL, tail = NULL;
-	printf("\nHow many characters: \n");
-	scanf("%d", &how_many_characters);
-	printf("Enter the characters: \n");
-	for(counter = 0; counter < how_many_characters; counter++)
-	{
-		temp = (list) malloc(sizeof(node));
-		scanf(" %c", &data_char);
-		temp->data = data_char;
-		temp->next = NULL;
-		if(head == NULL)
-		{
-			head = temp;
-		}
-		else
-		{
-			current->next = temp;
-		}
-		current = temp;
-	}
-	printf("\nThe original list: \n");
-	prints_list(head);
-	//push(head);
-	//pop(head);
-	// list_size = find_size(head);	
-	// for(pop_counter = 0; pop_counter < list_size; pop_counter++){
-		// pop(head);
-	// }
-	//is_empty(head);
+	int action_key = 0;
 	do {
-	    printf("\nEnter 1: Pop, 2: Push, 3: Print, 4: Size, 5: Is Empty, 6: Exit \n");
+	    printf("\nEnter 1: Pop, 2: Push, 3: Print, 4: Size, 5: Is stack empty, 6: Exit \n");
 		scanf("%d", &action_key);
 		switch(action_key){
 			case 1:
-				pop(head);
+				pop();
 				break;
 			case 2:
-				push(head);
+				push();
 				break;
 			case 3:
-				prints_list(head);
+				prints_list();
 				break;
 			case 4:
-				find_size(head);
+				find_size();
 			    break;
 			case 5:
-				is_empty(head);
+				is_empty();
 			    break;
 			case 6:	
 				break;
@@ -77,74 +47,87 @@ int main()
 	return 0;
 }
 
-int push(list list_head)
+int push()
 {
 	char c;
-	list tail = NULL, current = NULL, iterator = NULL;
-	printf("\nenter a character\n");
+	list tail = NULL;
+	printf("\nEnter a character\n");
     scanf(" %c", &c);
-    tail = (list) malloc(sizeof(node));
-    tail->data = c;
-    tail->next = NULL;
-    current = list_head;
-    while(current->next)
+    if(current == NULL)
 	{
-		current = current->next;
+		current = (list) malloc(sizeof(node));
+		current->next = NULL;
+		current->data = c;
 	}
-    current->next = tail;
-	printf("\nThe updated list after push is: \n");
-	prints_list(list_head);
+	else
+	{
+		tail = (list) malloc(sizeof(node));
+		tail->next = current;
+		tail->data = c;
+		current = tail;
+	}
+	prints_list(current);
 	return 0;
 }
 
-int pop(list head_list)
+int pop()
 {
-    list previous = NULL, current = NULL;
-	current = head_list;
-	while(current->next)
-	{
-		previous = current;
-		current = current->next;
+    list current_top = NULL;
+	current_top = current;
+	if(current_top == NULL){
+		prints_list(current);
+		return 0;
 	}
-	current = NULL;	
-	//previous->next = NULL;	
-	printf("\nThe list is:\n");
-	is_empty(head_list);	
+	else{
+		current_top = current_top->next;
+	}		
+    free(current);
+    current = current_top;
+	prints_list(current);	
 	return 0;
 }
 
-int find_size(list head_list){
+int find_size()
+{
 	list iterator = NULL;
 	int size = 0;
-	iterator = head_list;
+	iterator = current;
 	while(iterator != NULL){
 		iterator = iterator->next;
 		size++;
 	}
-	printf("The size of the linked list is: %d", size);
+	printf("Stack size is: %d", size);
 	return size;
 }
 
-int is_empty(list head_list){
+int is_empty()
+{
 	list iterator = NULL;
-	iterator = head_list;
+	iterator = current;
 	if(iterator == NULL){
-		printf("\nThe list is empty\n");
+		printf("\nThe stack is empty\n");
 	}
 	else
 	{
-		prints_list(head_list);
+		printf("\nThe stack is not empty\n");
 	}
 	return 0;
 }
 
-int prints_list(list head_list){
-    list iterator = NULL;
-	iterator = head_list;	
-	while(iterator != NULL)
-	{
-		printf("%c \n", iterator->data);
-		iterator = iterator->next;
-	}    	
+int prints_list()
+{
+	list iterator = NULL;
+    iterator = current;
+    if (iterator == NULL)
+    {
+        printf("\nThe stack is empty\n");
+        return 0;
+    }
+    printf("\nThe list is: \n");
+    while (iterator != NULL)
+    {
+        printf("%c \n", iterator->data);
+        iterator = iterator->next;
+    }    	
 	return 0;
 }
